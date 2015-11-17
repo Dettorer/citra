@@ -136,10 +136,14 @@ struct Regs {
 
         union {
             u32 raw;
-            BitField< 0, 8, u32> r;
-            BitField< 8, 8, u32> g;
-            BitField<16, 8, u32> b;
-            BitField<24, 8, u32> a;
+            #pragma pack(push, 1)
+            struct {
+                u8 r;
+                u8 g;
+                u8 b;
+                u8 a;
+            };
+            #pragma pack(pop)
         } border_color;
 
         union {
@@ -344,10 +348,14 @@ struct Regs {
 
         union {
             u32 const_color;
-            BitField< 0, 8, u32> const_r;
-            BitField< 8, 8, u32> const_g;
-            BitField<16, 8, u32> const_b;
-            BitField<24, 8, u32> const_a;
+            #pragma pack(push, 1)
+            struct {
+                u8 const_r;
+                u8 const_g;
+                u8 const_b;
+                u8 const_a;
+            };
+            #pragma pack(pop)
         };
 
         union {
@@ -396,10 +404,14 @@ struct Regs {
 
     union {
         u32 raw;
-        BitField< 0, 8, u32> r;
-        BitField< 8, 8, u32> g;
-        BitField<16, 8, u32> b;
-        BitField<24, 8, u32> a;
+        #pragma pack(push, 1)
+        struct {
+            u8 r;
+            u8 g;
+            u8 b;
+            u8 a;
+        };
+        #pragma pack(pop)
     } tev_combiner_buffer_color;
 
     INSERT_PADDING_WORDS(0x2);
