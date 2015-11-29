@@ -248,7 +248,7 @@ public:
     void SetHandle(std::FILE* file);
 
     bool Seek(s64 off, int origin);
-    u64 Tell();
+    s64 Tell();
     u64 GetSize();
     bool Resize(u64 size);
     bool Flush();

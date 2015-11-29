@@ -306,7 +306,7 @@ bool Copy(const std::string &srcFilename, const std::string &destFilename)
     while (!feof(input))
     {
         // read input
-        int rnum = fread(buffer, sizeof(char), BSIZE, input);
+        size_t rnum = fread(buffer, sizeof(char), BSIZE, input);
         if (rnum != BSIZE)
         {
             if (ferror(input) != 0)
@@ -319,7 +319,7 @@ bool Copy(const std::string &srcFilename, const std::string &destFilename)
         }
 
         // write output
-        int wnum = fwrite(buffer, sizeof(char), rnum, output);
+        size_t wnum = fwrite(buffer, sizeof(char), rnum, output);
         if (wnum != rnum)
         {
             LOG_ERROR(Common_Filesystem,
@@ -365,7 +365,7 @@ u64 GetSize(const std::string &filename)
     {
         LOG_TRACE(Common_Filesystem, "%s: %lld",
                 filename.c_str(), (long long)buf.st_size);
-        return buf.st_size;
+        return static_cast<u64>(buf.st_size);
     }
 
     LOG_ERROR(Common_Filesystem, "Stat failed %s: %s",
@@ -382,26 +382,26 @@ u64 GetSize(const int fd)
             fd, GetLastErrorMsg());
         return 0;
     }
-    return buf.st_size;
+    return static_cast<u64>(buf.st_size);
 }
 
 // Overloaded GetSize, accepts FILE*
 u64 GetSize(FILE *f)
 {
     // can't use off_t here because it can be 32-bit
-    u64 pos = ftello(f);
+    s64 pos = ftello(f);
     if (fseeko(f, 0, SEEK_END) != 0) {
         LOG_ERROR(Common_Filesystem, "GetSize: seek failed %p: %s",
               f, GetLastErrorMsg());
         return 0;
     }
-    u64 size = ftello(f);
+    s64 size = ftello(f);
     if ((size != pos) && (fseeko(f, pos, SEEK_SET) != 0)) {
         LOG_ERROR(Common_Filesystem, "GetSize: seek failed %p: %s",
               f, GetLastErrorMsg());
         return 0;
     }
-    return size;
+    return static_cast<u64>(size);
 }
 
 // creates an empty file filename, returns true on success
@@ -827,7 +827,7 @@ void SplitFilename83(const std::string& filename, std::array<char, 9>& short_nam
         point = filename.rfind('.', point);
 
     // Get short name.
-    int j = 0;
+    size_t j = 0;
     for (char letter : filename.substr(0, point)) {
         if (forbidden_characters.find(letter, 0) != std::string::npos)
             continue;
@@ -838,14 +838,14 @@ void SplitFilename83(const std::string& filename, std::array<char, 9>& short_nam
             short_name[7] = '1';
             break;
         }
-        short_name[j++] = toupper(letter);
+        short_name[j++] = static_cast<char>(toupper(letter));
     }
 
     // Get extension.
     if (point != std::string::npos) {
         j = 0;
         for (char letter : filename.substr(point + 1, 3))
-            extension[j++] = toupper(letter);
+            extension[j++] = static_cast<char>(toupper(letter));
     }
 }
 
@@ -938,7 +938,7 @@ bool IOFile::Seek(s64 off, int origin)
     return m_good;
 }
 
-u64 IOFile::Tell()
+s64 IOFile::Tell()
 {
     if (IsOpen())
         return ftello(m_file);
@@ -963,7 +963,7 @@ bool IOFile::Resize(u64 size)
         _chsize_s(_fileno(m_file), size)
 #else
         // TODO: handle 64bit and growing
-        ftruncate(fileno(m_file), size)
+        ftruncate(fileno(m_file), static_cast<s64>(size))
 #endif
     )
         m_good = false;
