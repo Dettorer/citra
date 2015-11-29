@@ -38,8 +38,8 @@ private:
 template <typename T>
 class SynchronizedRef {
 public:
-    SynchronizedRef(SynchronizedWrapper<T>& wrapper) : wrapper(&wrapper) {
-        wrapper.mutex.lock();
+    SynchronizedRef(SynchronizedWrapper<T>& _wrapper) : wrapper(&_wrapper) {
+        _wrapper.mutex.lock();
     }
 
     SynchronizedRef(SynchronizedRef&) = delete;

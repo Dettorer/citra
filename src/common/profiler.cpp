@@ -90,10 +90,10 @@ void ProfilingManager::FinishFrame() {
     last_frame_end = now;
 }
 
-TimingResultsAggregator::TimingResultsAggregator(size_t window_size)
-        : max_window_size(window_size), window_size(0) {
-    interframe_times.resize(window_size, Duration::zero());
-    frame_times.resize(window_size, Duration::zero());
+TimingResultsAggregator::TimingResultsAggregator(size_t _window_size)
+        : max_window_size(_window_size), window_size(0) {
+    interframe_times.resize(_window_size, Duration::zero());
+    frame_times.resize(_window_size, Duration::zero());
 }
 
 void TimingResultsAggregator::Clear() {

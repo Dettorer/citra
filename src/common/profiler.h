@@ -84,7 +84,7 @@ private:
  */
 class Timer {
 public:
-    Timer(TimingCategory& category) : category(category) {
+    Timer(TimingCategory& _category) : category(_category) {
     }
 
     void Start() {
