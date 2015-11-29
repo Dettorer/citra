@@ -124,3 +124,8 @@ EmuWindow::FramebufferLayout EmuWindow::FramebufferLayout::DefaultScreenLayout(u
 
     return res;
 }
+
+void EmuWindow::OnMinimalClientAreaChangeRequest(const std::pair<unsigned,unsigned>& minimal_size) {
+    // By default, ignore this request and do nothing.
+    (void)minimal_size;
+}
