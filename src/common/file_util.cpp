@@ -470,6 +470,8 @@ bool ForeachDirectoryEntry(unsigned* num_entries_out, const std::string &directo
     // num_entries_out is allowed to be specified nullptr, in which case we shouldn't try to set it
     if (num_entries_out != nullptr)
         *num_entries_out = found_entries;
+
+    return true;
 }
 
 unsigned ScanDirectoryTree(const std::string &directory, FSTEntry& parent_entry)
