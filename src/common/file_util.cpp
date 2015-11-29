@@ -475,11 +475,11 @@ bool ForeachDirectoryEntry(unsigned* num_entries_out, const std::string &directo
 unsigned ScanDirectoryTree(const std::string &directory, FSTEntry& parent_entry)
 {
     const auto callback = [&parent_entry](unsigned* num_entries_out,
-                                          const std::string& directory,
+                                          const std::string& _directory,
                                           const std::string& virtual_name) -> bool {
         FSTEntry entry;
         entry.virtualName = virtual_name;
-        entry.physicalName = directory + DIR_SEP + virtual_name;
+        entry.physicalName = _directory + DIR_SEP + virtual_name;
 
         if (IsDirectory(entry.physicalName)) {
             entry.isDirectory = true;
@@ -505,9 +505,9 @@ unsigned ScanDirectoryTree(const std::string &directory, FSTEntry& parent_entry)
 bool DeleteDirRecursively(const std::string &directory)
 {
     const static auto callback = [](unsigned* num_entries_out,
-                                    const std::string& directory,
+                                    const std::string& _directory,
                                     const std::string& virtual_name) -> bool {
-        std::string new_path = directory + DIR_SEP_CHR + virtual_name;
+        std::string new_path = _directory + DIR_SEP_CHR + virtual_name;
         if (IsDirectory(new_path))
             return DeleteDirRecursively(new_path);
 
