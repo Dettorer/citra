@@ -487,7 +487,7 @@ unsigned ScanDirectoryTree(const std::string &directory, FSTEntry& parent_entry)
             entry.isDirectory = true;
             // is a directory, lets go inside
             entry.size = ScanDirectoryTree(entry.physicalName, entry);
-            *num_entries_out += (int)entry.size;
+            *num_entries_out += entry.size;
         } else { // is a file
             entry.isDirectory = false;
             entry.size = GetSize(entry.physicalName);
