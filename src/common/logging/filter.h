@@ -48,7 +48,7 @@ public:
     bool CheckMessage(Class log_class, Level level) const;
 
 private:
-    std::array<Level, (size_t)Class::Count> class_levels;
+    std::array<Level, static_cast<size_t>(Class::Count)> class_levels;
 };
 
 }
