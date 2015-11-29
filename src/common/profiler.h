@@ -64,7 +64,7 @@ public:
      */
     Duration GetAccumulatedTime() {
         return Duration(std::atomic_exchange_explicit(
-                &accumulated_duration, (Duration::rep)0,
+                &accumulated_duration, static_cast<Duration::rep>(0),
                 std::memory_order_relaxed));
     }
 

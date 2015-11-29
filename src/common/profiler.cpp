@@ -59,7 +59,7 @@ unsigned int ProfilingManager::RegisterTimingCategory(TimingCategory* category, 
     info.name = name;
     info.parent = TimingCategoryInfo::NO_PARENT;
 
-    unsigned int id = (unsigned int)timing_categories.size();
+    unsigned int id = static_cast<unsigned int>(timing_categories.size());
     timing_categories.push_back(std::move(info));
 
     return id;
@@ -140,7 +140,7 @@ static AggregatedDuration AggregateField(const std::vector<Duration>& v, size_t 
         result.max = std::max(result.max, value);
     }
     if (len != 0)
-        result.avg /= len;
+        result.avg /= static_cast<const long>(len);
 
     return result;
 }
@@ -177,7 +177,7 @@ ProfilingManager& GetProfilingManager() {
 }
 
 SynchronizedRef<TimingResultsAggregator> GetTimingResultsAggregator() {
-    static SynchronizedWrapper<TimingResultsAggregator> aggregator(30);
+    static SynchronizedWrapper<TimingResultsAggregator> aggregator(static_cast<size_t>(30));
     return SynchronizedRef<TimingResultsAggregator>(aggregator);
 }
 

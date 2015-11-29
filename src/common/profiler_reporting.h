@@ -14,7 +14,7 @@ namespace Common {
 namespace Profiling {
 
 struct TimingCategoryInfo {
-    static const unsigned int NO_PARENT = -1;
+    static const unsigned int NO_PARENT = std::numeric_limits<unsigned>::max();
 
     TimingCategory* category;
     const char* name;
