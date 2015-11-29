@@ -391,8 +391,14 @@ static std::string CodeToUTF8(const char* fromcode, const std::basic_string<T>& 
 
     while (0 != src_bytes)
     {
-        size_t const iconv_result = iconv(conv_desc, (char**)(&src_buffer), &src_bytes,
-            &dst_buffer, &dst_bytes);
+        const char** iconv_inbuff = reinterpret_cast<const char**>(&src_buffer);
+
+        // This const_cast is here because iconv declares its second argument as
+        // "char**" where it should be "const char**" because the only thing
+        // actually modified is the pointer, hence the const_cast.
+        const size_t iconv_result = iconv(conv_desc,
+                                        const_cast<char**>(iconv_inbuff),
+                                        &src_bytes, &dst_buffer, &dst_bytes);
 
         if (static_cast<size_t>(-1) == iconv_result)
         {
