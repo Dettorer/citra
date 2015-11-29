@@ -70,7 +70,7 @@ void* AllocateExecutableMemory(size_t size)
     }
 #endif
 
-#if EMU_ARCH_BITS == 64
+#if defined(EMU_ARCH_BITS) && EMU_ARCH_BITS == 64
     if ((u64)ptr >= 0x80000000 && low == true)
         LOG_ERROR(Common_Memory, "Executable memory ended up above 2GB!");
 #endif
