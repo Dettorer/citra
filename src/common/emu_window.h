@@ -195,7 +195,7 @@ private:
      * Handler called when the minimal client area was requested to be changed via SetConfig.
      * For the request to be honored, EmuWindow implementations will usually reimplement this function.
      */
-    virtual void OnMinimalClientAreaChangeRequest(const std::pair<unsigned,unsigned>& minimal_size);
+    virtual void OnMinimalClientAreaChangeRequest(const std::pair<unsigned,unsigned>&);
 
     FramebufferLayout framebuffer_layout; ///< Current framebuffer layout
 
