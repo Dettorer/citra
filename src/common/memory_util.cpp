@@ -25,7 +25,7 @@
 // This is purposely not a full wrapper for virtualalloc/mmap, but it
 // provides exactly the primitive operations that Dolphin needs.
 
-void* AllocateExecutableMemory(size_t size, bool low)
+void* AllocateExecutableMemory(size_t size)
 {
 #if defined(_WIN32)
     void* ptr = VirtualAlloc(nullptr, size, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
