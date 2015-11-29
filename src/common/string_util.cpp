@@ -39,7 +39,7 @@ std::string ToUpper(std::string str) {
 bool AsciiToHex(const char* _szValue, u32& result)
 {
     char *endptr = nullptr;
-    const u32 value = strtoul(_szValue, &endptr, 16);
+    const u32 value = static_cast<u32>(strtoul(_szValue, &endptr, 16));
 
     if (!endptr || *endptr)
         return false;
@@ -81,7 +81,7 @@ bool CharArrayFromFormatV(char* out, int outsize, const char* format, va_list ar
         c_locale = _create_locale(LC_ALL, ".1252");
     writtenCount = _vsnprintf_l(out, outsize, format, c_locale, args);
 #else
-    writtenCount = vsnprintf(out, outsize, format, args);
+    writtenCount = vsnprintf(out, static_cast<size_t>(outsize), format, args);
 #endif
 
     if (writtenCount > 0 && writtenCount < outsize)
@@ -131,7 +131,7 @@ std::string ArrayToString(const u8 *data, u32 size, int line_len, bool spaces)
 
     for (int line = 0; size; ++data, --size)
     {
-        oss << std::setw(2) << (int)*data;
+        oss << std::setw(2) << *data;
 
         if (line_len == ++line)
         {
@@ -266,7 +266,7 @@ void SplitString(const std::string& str, const char delim, std::vector<std::stri
 
 std::string TabsToSpaces(int tab_size, const std::string &in)
 {
-    const std::string spaces(tab_size, ' ');
+    const std::string spaces(static_cast<size_t>(tab_size), ' ');
     std::string out(in);
 
     size_t i = 0;
@@ -369,7 +369,7 @@ static std::string CodeToUTF8(const char* fromcode, const std::basic_string<T>& 
     std::string result;
 
     iconv_t const conv_desc = iconv_open("UTF-8", fromcode);
-    if ((iconv_t)(-1) == conv_desc)
+    if (reinterpret_cast<iconv_t>(-1) == conv_desc)
     {
         LOG_ERROR(Common, "Iconv initialization failure [%s]: %s", fromcode, strerror(errno));
         iconv_close(conv_desc);
@@ -425,7 +425,7 @@ std::u16string UTF8ToUTF16(const std::string& input)
     std::u16string result;
 
     iconv_t const conv_desc = iconv_open("UTF-16LE", "UTF-8");
-    if ((iconv_t)(-1) == conv_desc)
+    if (reinterpret_cast<iconv_t>(-1) == conv_desc)
     {
         LOG_ERROR(Common, "Iconv initialization failure [UTF-8]: %s", strerror(errno));
         iconv_close(conv_desc);
@@ -441,7 +441,7 @@ std::u16string UTF8ToUTF16(const std::string& input)
 
     char* src_buffer = const_cast<char*>(&input[0]);
     size_t src_bytes = in_bytes;
-    char* dst_buffer = (char*)(&out_buffer[0]);
+    char* dst_buffer = reinterpret_cast<char*>(&out_buffer[0]);
     size_t dst_bytes = out_buffer.size();
 
     while (0 != src_bytes)
