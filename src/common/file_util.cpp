@@ -506,7 +506,7 @@ unsigned ScanDirectoryTree(const std::string &directory, FSTEntry& parent_entry)
 
 bool DeleteDirRecursively(const std::string &directory)
 {
-    const static auto callback = [](unsigned* num_entries_out,
+    const static auto callback = [](unsigned*,
                                     const std::string& _directory,
                                     const std::string& virtual_name) -> bool {
         std::string new_path = _directory + DIR_SEP_CHR + virtual_name;
