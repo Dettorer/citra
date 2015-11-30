@@ -126,7 +126,7 @@ if (Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS})
 else()
     message(STATUS "Boost 1.57.0 or newer not found, falling back to externals")
-    include_directories(externals/boost)
+    include_directories(SYSTEM externals/boost)
 endif()
 
 # Include bundled CMake modules

@@ -1,5 +1,6 @@
 # Generate cpp with Git revision from template
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/scm_rev.cpp.in" "${CMAKE_CURRENT_SOURCE_DIR}/scm_rev.cpp" @ONLY)
+set_source_files_properties(microprofile.cpp PROPERTIES COMPILE_FLAGS "-Wno-everything")
 
 set(SRCS
             break_points.cpp
