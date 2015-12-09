@@ -55,10 +55,12 @@ const u32 SIGTERM = 15;
 const u32 MSG_WAITALL = 8;
 #endif
 
-const u32 R0_REGISTER = 0;
-const u32 R15_REGISTER = 15;
-const u32 CPSR_REGISTER = 25;
-const u32 FPSCR_REGISTER = 58;
+enum GDBRegister {
+    R0_REGISTER = 0,
+    R15_REGISTER = 15,
+    CPSR_REGISTER = 25,
+    FPSCR_REGISTER = 58
+};
 
 namespace GDBStub {
 
