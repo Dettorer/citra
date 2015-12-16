@@ -64,8 +64,15 @@ if (NOT DEFINED ARCHITECTURE)
 endif()
 message(STATUS "Target architecture: ${ARCHITECTURE}")
 
+if (NOT CMAKE_GENERATOR STREQUAL Xcode)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror")
+endif()
+
 if (NOT MSVC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y -Wno-attributes -pthread")
+    # Currently, clang incorrectly throws this warning with enums, see https://llvm.org/bugs/show_bug.cgi?id=16154
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-tautological-constant-out-of-range-compare")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pthread")
 
     if (ARCHITECTURE_x86_64)
@@ -233,8 +240,8 @@ include_directories(${INI_PREFIX})
 add_subdirectory(${INI_PREFIX})
 
 add_subdirectory(externals/glad)
-include_directories(externals/microprofile)
-include_directories(externals/nihstro/include)
+include_directories(SYSTEM externals/microprofile) # TODO: remove "SYSTEM" and actually fix the warnings upstream
+include_directories(SYSTEM externals/nihstro/include) # TODO: remove "SYSTEM" and actually fix the warnings upstream
 
 if (MSVC)
     add_subdirectory(externals/getopt)
