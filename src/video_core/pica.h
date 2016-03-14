@@ -737,8 +737,10 @@ struct Regs {
         case LightingSampler::ReflectGreen:
         case LightingSampler::ReflectBlue:
             return (config == LightingConfig::Config4) || (config == LightingConfig::Config5) || (config == LightingConfig::Config7);
+
+        default:
+            return false;
         }
-        return false;
     }
 
     struct {
