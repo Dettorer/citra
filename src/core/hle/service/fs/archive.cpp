@@ -2,6 +2,7 @@
 // Licensed under GPLv2 or any later version
 // Refer to the license.txt file included.
 
+#include <cinttypes>
 #include <cstddef>
 #include <system_error>
 #include <type_traits>
@@ -105,7 +106,7 @@ ResultVal<bool> File::SyncRequest() {
                       GetTypeName().c_str(), GetName().c_str(), offset, length, address);
 
             if (offset + length > backend->GetSize()) {
-                LOG_ERROR(Service_FS, "Reading from out of bounds offset=0x%llX length=0x%08X file_size=0x%llX",
+                LOG_ERROR(Service_FS, "Reading from out of bounds offset=0x%" PRIX64 " length=0x%08X file_size=0x%" PRIX64,
                           offset, length, backend->GetSize());
             }
 
